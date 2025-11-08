@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useScrollRestoration } from "@/hooks/use-scroll-restoration";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -169,6 +170,9 @@ const samplePurchases: Purchase[] = [
 ];
 
 const BuyerDashboard = () => {
+  // Enable scroll restoration for this page
+  useScrollRestoration();
+  
   const navigate = useNavigate();
   const [listings] = useState<CropListing[]>(sampleListings);
   const [purchases] = useState<Purchase[]>(samplePurchases);

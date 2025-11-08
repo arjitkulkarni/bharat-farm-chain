@@ -7,10 +7,12 @@ import { Navigate } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import Farmer from "./pages/Farmer";
 import Vendor from "./pages/Vendor";
 import Buyer from "./pages/Buyer";
+import FarmAcademy from "./pages/FarmAcademy";
 import NotFound from "./pages/NotFound";
 import FarmerLogin from "./pages/farmer/Login";
 import FarmerCreateListing from "./pages/farmer/CreateListing";
@@ -38,8 +40,10 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-        <Routes>
+            <ScrollToTop />
+            <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/farm-academy" element={<FarmAcademy />} />
           <Route path="/farmer" element={<Navigate to="/farmer/login" replace />} />
           <Route path="/farmer/login" element={<FarmerLogin />} />
           <Route path="/farmer/dashboard" element={<ProtectedRoute role="farmer"><Farmer /></ProtectedRoute>} />

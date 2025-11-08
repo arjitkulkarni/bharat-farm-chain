@@ -34,8 +34,10 @@ import {
   MapPin,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroImage from "@/assets/hero-farmer.jpg";
+// import heroImage from "@/assets/hero-farmer.jpg";
+const heroImage = "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1200&h=600&fit=crop&q=80"; // Farmer in field
 import { fetchWeatherByCity, type WeatherResponse } from "@/services/weatherService";
+import { useScrollRestoration } from "@/hooks/use-scroll-restoration";
 
 type Language = "en" | "hi" | "kn";
 
@@ -380,6 +382,9 @@ const detailPages = [
 ];
 
 const Farmer = () => {
+  // Enable scroll restoration for this page
+  useScrollRestoration();
+  
   const [lang, setLang] = useState<Language>("en");
   const [weather, setWeather] = useState<WeatherResponse | null>(null);
   const [isLoadingWeather, setIsLoadingWeather] = useState(true);
@@ -407,402 +412,270 @@ const Farmer = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#f7f3ed] via-[#f3f7f0] to-white">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#f8faf7] to-white">
       <Header />
       
-      {/* Hero + Flow Overview */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 opacity-40 mix-blend-multiply">
+      {/* Compact Hero with Background */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-farmer/5 via-emerald-50/30 to-white">
+        <div className="absolute inset-0 opacity-20">
           <img src={heroImage} alt="Farmer standing in a lush field" className="h-full w-full object-cover" />
         </div>
-        <div className="relative container mx-auto px-4 py-20 lg:py-28 text-left lg:text-center">
-          <div className="mx-auto max-w-4xl space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-white/70 px-5 py-2 text-sm font-medium shadow-soft">
-              <Sprout className="h-4 w-4 text-farmer" />
+        <div className="relative container mx-auto px-4 py-12 md:py-16">
+          <div className="mx-auto max-w-5xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-farmer/20 bg-white/80 px-4 py-1.5 text-xs font-medium shadow-sm backdrop-blur-sm">
+              <Sprout className="h-3.5 w-3.5 text-farmer" />
               {t.badge}
             </div>
-            <h1 className="text-4xl font-bold leading-tight text-foreground drop-shadow-sm md:text-5xl lg:text-6xl">
+            <h1 className="mt-4 text-3xl font-bold leading-tight text-foreground md:text-4xl lg:text-5xl">
               {t.heroTitle}
             </h1>
-            <p className="text-lg text-foreground/80 md:text-xl">
+            <p className="mt-3 text-base text-foreground/70 md:text-lg max-w-2xl">
               {t.heroSubtitle}
             </p>
           </div>
         </div>
       </section>
 
-      {/* Dashboard Hero */}
-      <section className="bg-gradient-to-br from-[#f1efe8] via-[#f4faf2] to-white py-16 md:py-20">
+      {/* Compact Dashboard Header */}
+      <section className="py-8 md:py-12">
         <div className="container mx-auto px-4">
-          <Card className="overflow-hidden border-none bg-white/80 shadow-xl backdrop-blur">
-            <div className="grid gap-10 lg:grid-cols-[2fr,3fr]">
-              <div className="space-y-6 p-8 lg:p-12">
-                <div className="inline-flex items-center gap-2 rounded-full bg-farmer/10 px-4 py-2 text-sm font-medium text-farmer">
-                  {t.dashboardHeaderBadge}
+          <Card className="overflow-hidden border-farmer/10 bg-white shadow-lg">
+            <div className="p-6 md:p-8">
+              {/* Header Row */}
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-farmer/10">
+                    <Sprout className="h-6 w-6 text-farmer" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-foreground">{t.dashboardGreeting}</h2>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <MapPin className="h-3.5 w-3.5" />
+                      <span>{t.village}, {t.district}</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="space-y-5">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <h2 className="text-3xl font-bold text-foreground md:text-4xl">{t.dashboardGreeting}</h2>
-                    <Badge variant="secondary" className="bg-emerald-100 text-emerald-700">
-                      {t.dpinLabel}
-                    </Badge>
-                  </div>
-                  <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                    <span className="inline-flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-farmer" />
-                      {t.village}
-                    </span>
-                    <span className="inline-flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-farmer" />
-                      {t.district}
-                    </span>
-                    <span className="inline-flex items-center gap-2">
-                      <Home className="h-4 w-4 text-farmer" />
-                      {t.state}
-                    </span>
-                  </div>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                      {t.languageLabel}
-                    </span>
-                    <div className="flex overflow-hidden rounded-full border border-farmer/40 bg-white/80 text-xs font-semibold">
-                      <button
-                        onClick={() => setLang("en")}
-                        className={`px-3 py-1 transition ${lang === "en" ? "bg-farmer text-white" : "text-foreground/70 hover:bg-farmer/10"}`}
-                      >
-                        English
-                      </button>
-                      <button
-                        onClick={() => setLang("hi")}
-                        className={`px-3 py-1 transition ${lang === "hi" ? "bg-farmer text-white" : "text-foreground/70 hover:bg-farmer/10"}`}
-                      >
-                        हिंदी
-                      </button>
-                      <button
-                        onClick={() => setLang("kn")}
-                        className={`px-3 py-1 transition ${lang === "kn" ? "bg-farmer text-white" : "text-foreground/70 hover:bg-farmer/10"}`}
-                      >
-                        ಕನ್ನಡ
-                      </button>
-                    </div>
-                  </div>
-                  {weather && !isLoadingWeather && (
-                    <div className="grid gap-3 text-sm text-foreground/85 sm:grid-cols-3">
-                      <div className="flex items-center gap-2 rounded-xl border border-border bg-muted/30 px-4 py-3">
-                        <CloudSun className="h-5 w-5 text-farmer" />
-                        <div>
-                          <p className="text-sm font-semibold">{weather.current.temperature}°C</p>
-                          <p className="text-xs text-muted-foreground">Feels like {weather.current.feelsLike}°</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 rounded-xl border border-border bg-muted/30 px-4 py-3">
-                        <CloudRain className="h-5 w-5 text-farmer" />
-                        <div>
-                          <p className="text-sm font-semibold">Rain chance {weather.current.rainChance}%</p>
-                          <p className="text-xs text-muted-foreground capitalize">{weather.current.description}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 rounded-xl border border-border bg-muted/30 px-4 py-3">
-                        <Droplets className="h-5 w-5 text-farmer" />
-                        <div>
-                          <p className="text-sm font-semibold">Humidity {weather.current.humidity}%</p>
-                          <p className="text-xs text-muted-foreground">Wind {weather.current.windSpeed} km/h</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                <div className="flex items-center gap-3">
+                  <Badge variant="secondary" className="bg-emerald-100 text-emerald-700">
+                    {t.verifiedFarmer}
+                  </Badge>
+                  <Badge variant="outline" className="border-farmer/30 text-farmer">
+                    {t.dpinLabel}
+                  </Badge>
                 </div>
               </div>
-              <div className="relative flex items-end rounded-tl-[48px] bg-gradient-to-br from-[#dbe7d2] via-[#f0f5ec] to-white p-10">
-                <div className="w-full space-y-4 rounded-3xl border border-white/60 bg-white/70 p-6 shadow-soft backdrop-blur">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">{t.dashboardGreeting.split(",")[0]},</p>
-                      <p className="text-2xl font-semibold text-foreground">{t.dashboardGreeting.split(" ")[1]}</p>
+
+              {/* Weather & Language Row */}
+              <div className="mt-6 grid gap-4 md:grid-cols-2">
+                {/* Weather Cards */}
+                {weather && !isLoadingWeather && (
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="rounded-lg border border-border bg-gradient-to-br from-amber-50 to-white p-3 text-center">
+                      <CloudSun className="mx-auto h-5 w-5 text-amber-600" />
+                      <p className="mt-1 text-lg font-bold text-foreground">{weather.current.temperature}°C</p>
+                      <p className="text-xs text-muted-foreground">Temp</p>
                     </div>
-                    <Badge className="bg-emerald-100 text-emerald-700">{t.verifiedFarmer}</Badge>
+                    <div className="rounded-lg border border-border bg-gradient-to-br from-blue-50 to-white p-3 text-center">
+                      <CloudRain className="mx-auto h-5 w-5 text-blue-600" />
+                      <p className="mt-1 text-lg font-bold text-foreground">{weather.current.rainChance}%</p>
+                      <p className="text-xs text-muted-foreground">Rain</p>
+                    </div>
+                    <div className="rounded-lg border border-border bg-gradient-to-br from-sky-50 to-white p-3 text-center">
+                      <Droplets className="mx-auto h-5 w-5 text-sky-600" />
+                      <p className="mt-1 text-lg font-bold text-foreground">{weather.current.humidity}%</p>
+                      <p className="text-xs text-muted-foreground">Humidity</p>
+                    </div>
                   </div>
-                  <div className="rounded-2xl border border-border bg-muted/20 p-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <Leaf className="h-4 w-4 text-farmer" />
-                      <span>{t.village}</span>
-                    </div>
-                    <div className="mt-2 flex items-center gap-2">
-                      <Leaf className="h-4 w-4 text-farmer" />
-                      <span>{t.district}</span>
-                    </div>
+                )}
+
+                {/* Language Selector */}
+                <div className="flex items-center justify-end gap-3">
+                  <span className="text-xs font-medium text-muted-foreground">
+                    {t.languageLabel}:
+                  </span>
+                  <div className="flex overflow-hidden rounded-lg border border-farmer/30 bg-white text-xs font-medium">
+                    <button
+                      onClick={() => setLang("en")}
+                      className={`px-4 py-2 transition-all ${lang === "en" ? "bg-farmer text-white" : "text-foreground/70 hover:bg-farmer/10"}`}
+                    >
+                      English
+                    </button>
+                    <button
+                      onClick={() => setLang("hi")}
+                      className={`px-4 py-2 transition-all ${lang === "hi" ? "bg-farmer text-white" : "text-foreground/70 hover:bg-farmer/10"}`}
+                    >
+                      हिंदी
+                    </button>
+                    <button
+                      onClick={() => setLang("kn")}
+                      className={`px-4 py-2 transition-all ${lang === "kn" ? "bg-farmer text-white" : "text-foreground/70 hover:bg-farmer/10"}`}
+                    >
+                      ಕನ್ನಡ
+                    </button>
                   </div>
                 </div>
-                <div className="absolute -right-6 -top-6 hidden h-28 w-28 rounded-full border border-farmer/40 bg-farmer/10 blur-3xl lg:block" />
               </div>
             </div>
-            </Card>
+          </Card>
         </div>
       </section>
 
-      {/* Quick Actions */}
-      <section className="py-16 md:py-20">
+      {/* Quick Actions - Compact Grid */}
+      <section className="py-8 md:py-12">
         <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold text-foreground md:text-4xl">{t.quickActionsTitle}</h2>
-            <p className="mt-2 text-lg text-muted-foreground">{t.quickActionsSubtitle}</p>
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-foreground md:text-3xl">{t.quickActionsTitle}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{t.quickActionsSubtitle}</p>
           </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {quickActions.map((action) => (
-              <Card
+              <Link
                 key={action.title}
-                className="group relative overflow-hidden border-farmer/10 bg-white/90 p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-lg"
+                to={action.to}
+                className="group"
               >
-                <div className="absolute right-4 top-4 h-10 w-10 rounded-full bg-farmer/10 blur-2xl transition group-hover:bg-farmer/20" />
-                <div className="flex items-center gap-3">
-                  <div className="rounded-full bg-farmer/10 p-3 text-farmer">
-                    <action.icon className="h-6 w-6" />
+                <Card className="h-full border-farmer/10 bg-white p-5 shadow-sm transition-all hover:-translate-y-1 hover:border-farmer/30 hover:shadow-md">
+                  <div className="flex items-start gap-3">
+                    <div className="rounded-lg bg-farmer/10 p-2.5 text-farmer transition-colors group-hover:bg-farmer group-hover:text-white">
+                      <action.icon className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-foreground group-hover:text-farmer">
+                        {action.title}
+                      </h3>
+                      <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
+                        {action.description}
+                      </p>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-semibold text-foreground">
-                    {action.title}
-                  </h3>
+                  <ul className="mt-3 space-y-1">
+                    {action.highlights.slice(0, 2).map((item) => (
+                      <li key={item} className="flex items-center gap-1.5 text-xs text-foreground/70">
+                        <CheckCircle2 className="h-3 w-3 flex-shrink-0 text-farmer" />
+                        <span className="line-clamp-1">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-4 flex items-center gap-1 text-xs font-medium text-farmer">
+                    <span>{t.start}</span>
+                    <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                  </div>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Dashboard Panels - Compact */}
+      <section className="bg-muted/20 py-8 md:py-12">
+        <div className="container mx-auto px-4">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-foreground md:text-3xl">{t.panelsTitle}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{t.panelsSubtitle}</p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {dashboardPanels.map((panel) => (
+              <Card key={panel.title} className="border-border bg-white p-5 shadow-sm transition-all hover:shadow-md">
+                <div className="flex items-start gap-3">
+                  <div className="rounded-lg bg-farmer/10 p-2 text-farmer">
+                    <panel.icon className="h-5 w-5" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-foreground">{panel.title}</h3>
+                    <p className="mt-0.5 text-xs text-muted-foreground">{panel.summary}</p>
+                  </div>
                 </div>
-                <p className="mt-3 text-sm text-muted-foreground">
-                  {action.description}
-                </p>
-                <ul className="mt-4 space-y-2 text-sm text-foreground/80">
-                  {action.highlights.map((item) => (
-                    <li key={item} className="flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-farmer" />
-                      {item}
+                <ul className="mt-3 space-y-1.5">
+                  {panel.details.slice(0, 3).map((detail) => (
+                    <li key={detail} className="flex items-start gap-2 text-xs text-foreground/70">
+                      <Leaf className="mt-0.5 h-3 w-3 flex-shrink-0 text-farmer" />
+                      <span className="line-clamp-1">{detail}</span>
                     </li>
                   ))}
                 </ul>
-                <Button asChild variant="ghost" className="mt-6 w-full justify-between text-farmer hover:text-farmer">
-                  <Link to={action.to}>
-                    {t.start}
-                    <ArrowRight className="h-4 w-4" />
+                {panel.to && (
+                  <Link
+                    to={panel.to}
+                    className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-farmer transition-colors hover:text-farmer/80"
+                  >
+                    <span>{t.openPanel}</span>
+                    <ArrowRight className="h-3 w-3" />
                   </Link>
-                </Button>
+                )}
               </Card>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Dashboard Panels */}
-      <section className="bg-muted/40 py-16 md:py-20">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold text-foreground md:text-4xl">{t.panelsTitle}</h2>
-            <p className="mt-2 text-lg text-muted-foreground">
-              {t.panelsSubtitle}
-            </p>
-          </div>
-          <div className="mt-12 grid gap-6 lg:grid-cols-2">
-            {dashboardPanels.map((panel) => (
-              <Card key={panel.title} className="border-border bg-white/90 p-7 shadow-soft transition hover:shadow-lg">
-                <div className="flex items-center gap-3">
-                  <div className="rounded-full bg-farmer/10 p-3 text-farmer">
-                    <panel.icon className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-foreground">{panel.title}</h3>
-                    <p className="text-sm text-muted-foreground">{panel.summary}</p>
-                  </div>
-              </div>
-                <ul className="mt-4 grid gap-2 text-sm text-foreground/80 md:grid-cols-2">
-                  {panel.details.map((detail) => (
-                    <li key={detail} className="flex items-center gap-2 rounded-lg bg-muted/30 px-3 py-2">
-                      <Leaf className="h-4 w-4 text-farmer" />
-                      {detail}
-                </li>
-                  ))}
-              </ul>
-                {panel.to ? (
-                  <Button
-                    asChild
-                    variant="ghost"
-                    className="mt-6 inline-flex items-center gap-2 text-farmer hover:text-farmer"
-                  >
-                    <Link to={panel.to}>
-                      {t.openPanel}
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                ) : null}
-            </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Weather Widget */}
-      <section className="py-16 md:py-20">
-        <div className="container mx-auto px-4">
-          <Card className="overflow-hidden border-none bg-gradient-to-r from-[#d8e8d1] via-[#f0f5ef] to-[#fef5e7] shadow-xl lg:flex lg:items-center">
-            <div className="flex-1 space-y-4 p-8 lg:p-12">
-              <Badge variant="secondary" className="bg-emerald-100 text-emerald-700">
-                {t.weatherWidgetBadge}
-              </Badge>
-              <h2 className="text-3xl font-bold text-foreground md:text-4xl">{t.weatherTitle}</h2>
-              <p className="text-lg text-muted-foreground">
-                {t.weatherDescription}
-              </p>
-              <div className="grid gap-3 text-sm text-foreground/80 sm:grid-cols-2">
-                <div className="flex items-center gap-2 rounded-lg bg-white/60 px-3 py-2">
-                  <CloudSun className="h-5 w-5 text-amber-600" />
-                  Temperature & rainfall chance
-                </div>
-                <div className="flex items-center gap-2 rounded-lg bg-white/60 px-3 py-2">
-                  <Droplets className="h-5 w-5 text-sky-600" />
-                  Humidity & soil moisture cues
-                </div>
-                <div className="flex items-center gap-2 rounded-lg bg-white/60 px-3 py-2">
-                  <Wind className="h-5 w-5 text-emerald-600" />
-                  Upcoming 3-day forecast
-                </div>
-                <div className="flex items-center gap-2 rounded-lg bg-white/60 px-3 py-2">
-                  <Hash className="h-5 w-5 text-farmer" />
-                  Traceable data hashes for audit trail
-                </div>
-              </div>
+      {/* Weather Forecast - Compact */}
+      {weather && !isLoadingWeather && (
+        <section className="py-8 md:py-12">
+          <div className="container mx-auto px-4">
+            <div className="mb-4">
+              <h2 className="text-2xl font-bold text-foreground md:text-3xl">{t.weatherTitle}</h2>
+              <p className="mt-1 text-sm text-muted-foreground">{t.weatherDescription}</p>
             </div>
-            <div className="bg-[#f7f1e1]/80 p-8 lg:w-96">
-              <div className="rounded-3xl border border-white/40 bg-white/50 p-6 shadow-soft backdrop-blur">
-                {isLoadingWeather ? (
-                  <div className="flex items-center justify-center py-12">
-                    <div className="h-8 w-8 animate-spin rounded-full border-4 border-farmer border-t-transparent"></div>
+            <Card className="overflow-hidden border-farmer/10 bg-gradient-to-br from-amber-50/50 via-white to-sky-50/50 shadow-md">
+              <div className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">{weather.current.location}</p>
+                    <p className="mt-1 text-4xl font-bold text-foreground">{weather.current.temperature}°C</p>
+                    <p className="text-xs text-muted-foreground capitalize">{weather.current.description}</p>
                   </div>
-                ) : weather ? (
-                  <>
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <span>{weather.current.location}</span>
-                      <span>Updated {weather.current.lastUpdated}</span>
+                  <div className="text-right">
+                    <div className="rounded-lg bg-white/80 p-3">
+                      <p className="text-xs text-muted-foreground">Rain Chance</p>
+                      <p className="text-2xl font-bold text-blue-600">{weather.current.rainChance}%</p>
                     </div>
-                    <div className="mt-6 flex items-end justify-between">
-                      <div>
-                        <p className="text-6xl font-semibold text-foreground">{weather.current.temperature}°</p>
-                        <p className="text-sm text-muted-foreground">Feels like {weather.current.feelsLike}°</p>
-                      </div>
-                      <div className="text-right text-sm text-muted-foreground">
-                        <p>Rainfall chance</p>
-                        <p className="text-xl font-semibold text-farmer">{weather.current.rainChance}%</p>
-                      </div>
-                    </div>
-                    <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
-                      <div className="flex items-center gap-2">
-                        <Droplets className="h-4 w-4" />
-                        <span>Humidity {weather.current.humidity}%</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Wind className="h-4 w-4" />
-                        <span>Wind {weather.current.windSpeed} km/h</span>
-                      </div>
-                    </div>
-                    <div className="mt-6 grid grid-cols-3 gap-3 text-center text-sm text-muted-foreground">
-                      {weather.forecast.map((day, index) => (
-                        <div key={index} className="rounded-xl bg-muted/40 p-3">
-                          <p className="font-semibold text-foreground">{day.day}</p>
-                          <p>{day.tempMax}° / {day.tempMin}°</p>
-                          <p className="text-xl">{day.icon}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </>
-                ) : (
-                  <div className="py-12 text-center text-sm text-muted-foreground">
-                    <p>Weather data unavailable</p>
                   </div>
-                )}
-              </div>
-              </div>
-            </Card>
-        </div>
-      </section>
-
-      {/* Detailed Pages */}
-      <section className="bg-muted/30 py-16 md:py-20">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold text-foreground md:text-4xl">{t.detailPagesTitle}</h2>
-            <p className="mt-2 text-lg text-muted-foreground">
-              {t.detailPagesSubtitle}
-            </p>
-          </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {detailPages.map((page) => (
-              <Card key={page.title} className="border-border bg-white/90 p-7 shadow-soft transition hover:shadow-lg">
-                <div className="flex items-center gap-3">
-                  <div className="rounded-full bg-farmer/10 p-3 text-farmer">
-                    <page.icon className="h-6 w-6" />
-              </div>
-                  <h3 className="text-lg font-semibold text-foreground">{page.title}</h3>
-              </div>
-                <p className="mt-3 text-sm text-muted-foreground">{page.description}</p>
-                <ul className="mt-4 space-y-2 text-sm text-foreground/80">
-                  {page.points.map((point) => (
-                    <li key={point} className="flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-farmer" />
-                      {point}
-                    </li>
+                </div>
+                <div className="mt-4 grid grid-cols-3 gap-3">
+                  {weather.forecast.map((day, index) => (
+                    <div key={index} className="rounded-lg border border-border bg-white/60 p-3 text-center">
+                      <p className="text-xs font-medium text-foreground">{day.day}</p>
+                      <p className="my-1 text-2xl">{day.icon}</p>
+                      <p className="text-xs text-muted-foreground">{day.tempMax}° / {day.tempMin}°</p>
+                    </div>
                   ))}
-                </ul>
-                <Button asChild variant="ghost" className="mt-6 inline-flex items-center gap-2 text-farmer hover:text-farmer">
-                  <Link to={page.to}>
-                    Open
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-            </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Footer CTA */}
-      <section className="py-16 md:py-20">
-        <div className="container mx-auto px-4">
-          <Card className="overflow-hidden border-none bg-gradient-to-br from-[#f5efe3] via-white to-[#eef7eb] shadow-xl">
-            <div className="grid gap-10 lg:grid-cols-[3fr,2fr]">
-              <div className="space-y-6 p-8 lg:p-12">
-                <Badge variant="secondary" className="bg-farmer/10 text-farmer">
-                  Secure & Transparent
-                </Badge>
-                <h2 className="text-3xl font-bold text-foreground md:text-4xl">
-                  Built on privacy, DPIN security, and blockchain integrity.
-            </h2>
-                <p className="text-lg text-muted-foreground">
-                  Supabase JWT + Row Level Security keeps farmer data locked down. DPIN ensures offline resiliency and
-                  blockchain hashes provide irrefutable proof of identity and transactions.
-                </p>
-                <div className="grid gap-3 text-sm text-foreground/80 sm:grid-cols-2">
-                  <div className="flex items-center gap-2 rounded-lg bg-muted/40 px-3 py-2">
-                    <ShieldCheck className="h-5 w-5 text-farmer" />
-                    Verification status (Pending / Approved)
-                  </div>
-                  <div className="flex items-center gap-2 rounded-lg bg-muted/40 px-3 py-2">
-                    <Hash className="h-5 w-5 text-farmer" />
-                    Blockchain identity hash
-                  </div>
-                  <div className="flex items-center gap-2 rounded-lg bg-muted/40 px-3 py-2">
-                    <Phone className="h-5 w-5 text-farmer" />
-                    Toll-free support hotline
-                  </div>
-                  <div className="flex items-center gap-2 rounded-lg bg-muted/40 px-3 py-2">
-                    <Settings className="h-5 w-5 text-farmer" />
-                    One-tap logout from footer
-                  </div>
                 </div>
               </div>
-              <div className="relative flex items-end bg-[#f0f7f1] p-10">
-                <div className="w-full space-y-4 rounded-3xl border border-emerald-200 bg-white/80 p-6 shadow-soft backdrop-blur">
-                  <p className="text-sm font-semibold uppercase text-emerald-700">Farmer Support Center</p>
-                  <h3 className="text-2xl font-semibold text-foreground">
-                    “Sahi Daam. Sahi Faisla. Sahi Saathi.”
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Guidance in English, हिंदी, and ಕನ್ನಡ. DPIN support even without internet. Direct line to agricultural
-                    experts.
-                  </p>
-                  <Button className="w-full bg-farmer hover:bg-farmer/90">Chat with Support</Button>
-                </div>
+            </Card>
           </div>
+        </section>
+      )}
+
+      {/* Security & Support - Compact */}
+      <section className="py-8 md:py-12">
+        <div className="container mx-auto px-4">
+          <Card className="overflow-hidden border-farmer/10 bg-gradient-to-br from-emerald-50/30 via-white to-amber-50/30 shadow-md">
+            <div className="p-6 md:p-8">
+              <div className="flex items-start justify-between gap-6">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="h-5 w-5 text-farmer" />
+                    <h3 className="text-xl font-bold text-foreground">Secure & Transparent</h3>
+                  </div>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    DPIN security, blockchain integrity, and encrypted data protection.
+                  </p>
+                  <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                    <div className="flex items-center gap-2 text-xs text-foreground/70">
+                      <Hash className="h-3.5 w-3.5 text-farmer" />
+                      <span>Blockchain verified</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-foreground/70">
+                      <Phone className="h-3.5 w-3.5 text-farmer" />
+                      <span>24/7 Support</span>
+                    </div>
+                  </div>
+                </div>
+                <Button className="bg-farmer hover:bg-farmer/90">
+                  Get Help
+                </Button>
+              </div>
             </div>
           </Card>
         </div>

@@ -1,6 +1,6 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Sprout, Languages, LogOut, User } from "lucide-react";
+import { Sprout, Languages, LogOut, User, GraduationCap, Sparkles } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +15,7 @@ const Header = () => {
   const { language, setLanguage, t } = useLanguage();
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const languageOptions = [
     { code: "en" as const, label: "English", flag: "🇬🇧" },
@@ -40,6 +41,11 @@ const Header = () => {
     }
   };
 
+  // Check if current path is active for a portal
+  const isActive = (path: string) => {
+    return location.pathname.startsWith(path);
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -49,14 +55,77 @@ const Header = () => {
         </Link>
         
         <nav className="flex items-center gap-6">
-          <Link to="/farmer/login" className="text-sm font-medium text-foreground/80 hover:text-farmer transition-colors">
-            {t("forFarmers")}
+          {/* Farmer Portal Link */}
+          <Link 
+            to="/farmer/login" 
+            className={`
+              relative text-sm font-medium transition-all duration-300 ease-in-out
+              ${isActive('/farmer') 
+                ? 'text-farmer scale-110' 
+                : 'text-foreground/80 hover:text-farmer hover:scale-105'
+              }
+            `}
+          >
+            <span className="relative">
+              {t("forFarmers")}
+              {isActive('/farmer') && (
+                <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-farmer animate-pulse" />
+              )}
+            </span>
           </Link>
-          <Link to="/vendor" className="text-sm font-medium text-foreground/80 hover:text-vendor transition-colors">
-            {t("forVendors")}
+
+          {/* Vendor Portal Link */}
+          <Link 
+            to="/vendor" 
+            className={`
+              relative text-sm font-medium transition-all duration-300 ease-in-out
+              ${isActive('/vendor') 
+                ? 'text-vendor scale-110' 
+                : 'text-foreground/80 hover:text-vendor hover:scale-105'
+              }
+            `}
+          >
+            <span className="relative">
+              {t("forVendors")}
+              {isActive('/vendor') && (
+                <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-vendor animate-pulse" />
+              )}
+            </span>
           </Link>
-          <Link to="/buyer" className="text-sm font-medium text-foreground/80 hover:text-buyer transition-colors">
-            {t("forBuyers")}
+
+          {/* Buyer Portal Link */}
+          <Link 
+            to="/buyer" 
+            className={`
+              relative text-sm font-medium transition-all duration-300 ease-in-out
+              ${isActive('/buyer') 
+                ? 'text-buyer scale-110' 
+                : 'text-foreground/80 hover:text-buyer hover:scale-105'
+              }
+            `}
+          >
+            <span className="relative">
+              {t("forBuyers")}
+              {isActive('/buyer') && (
+                <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-buyer animate-pulse" />
+              )}
+            </span>
+          </Link>
+
+          {/* Divider */}
+          <div className="h-6 w-px bg-border" />
+
+          {/* Farm Academy Button - Catchy Learning Hub */}
+          <Link to="/farm-academy">
+            <Button 
+              size="sm" 
+              className="group relative overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:via-orange-600 hover:to-amber-700 text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              <GraduationCap className="h-3.5 w-3.5 mr-1.5 animate-pulse" />
+              <span className="relative font-semibold text-xs">Farm Academy</span>
+              <Sparkles className="h-3 w-3 ml-1 opacity-80 group-hover:opacity-100 transition-opacity" />
+            </Button>
           </Link>
           
           {/* Language Selector */}

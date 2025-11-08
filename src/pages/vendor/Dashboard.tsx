@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useScrollRestoration } from "@/hooks/use-scroll-restoration";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -163,6 +164,9 @@ const orderStatusData = [
 const COLORS = ["#22c55e", "#f59e0b", "#3b82f6", "#8b5cf6"];
 
 const VendorDashboard = () => {
+  // Enable scroll restoration for this page
+  useScrollRestoration();
+  
   const [products] = useState<Product[]>(sampleProducts);
   const [orders] = useState<Order[]>(sampleOrders);
 
