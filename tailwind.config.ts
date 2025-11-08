@@ -47,6 +47,9 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        farmer: "hsl(var(--farmer-green))",
+        vendor: "hsl(var(--vendor-brown))",
+        buyer: "hsl(var(--buyer-gold))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
