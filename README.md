@@ -1,73 +1,151 @@
-# Welcome to your Lovable project
+# KisanConnect - Bharat Farm Chain
 
-## Project info
+## 🌾 Project Overview
 
-**URL**: https://lovable.dev/projects/4dd17f02-900f-4788-84bc-075151c5b2ad
+**KisanConnect** is a comprehensive agricultural platform designed to empower India's farming ecosystem by connecting farmers, vendors, and buyers through a transparent, AI-powered marketplace. Built with trust, traceability, and fair pricing at its core, the platform leverages blockchain technology, DPIN verification, and offline-first design to serve rural India.
 
-## How can I edit this code?
+## ✨ Key Features
 
-There are several ways of editing your application.
+### For Farmers 🚜
+- **AI Soil Health Analysis**: Upload soil/leaf photos for instant health diagnostics and fertilizer recommendations
+- **Direct Crop Listings**: Sell produce in 60 seconds with blockchain traceability
+- **Vendor Connect**: Access verified suppliers for seeds, fertilizers, and tools
+- **Buyer Connect**: Talk directly to verified buyers with privacy-protected contact reveals
+- **Community Exchange**: Borrow/lend tools like tractors, pumps, and sprayers
+- **Government Schemes**: Discover personalized schemes by district and crop type
+- **Weather Integration**: Real-time weather updates with irrigation hints
+- **Multi-language Support**: Full interface in English, Hindi (हिंदी), and Kannada (ಕನ್ನಡ)
 
-**Use Lovable**
+### For Vendors 🏪
+- **Product Listings**: Sell agricultural inputs with verified profiles
+- **Crop Purchasing**: Buy directly from farmers at transparent rates
+- **AI Recommendations**: Products suggested automatically based on farmer needs
+- **Community Services**: Offer tractor rentals, tool lending, and irrigation services
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4dd17f02-900f-4788-84bc-075151c5b2ad) and start prompting.
+### For Buyers 🛒
+- **Verified Crop Discovery**: Search fresh produce with advanced filters
+- **Secure Communication**: Request contact approval with masked numbers
+- **Blockchain Traceability**: Full supply chain transparency for exports
+- **Flexible Payments**: UPI, escrow, bank transfer, or cash on delivery
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🛠️ Technology Stack
 
-**Use your preferred IDE**
+- **Frontend**: React 18 + TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS + shadcn-ui components
+- **Routing**: React Router v6
+- **State Management**: React Query (TanStack Query)
+- **Form Handling**: React Hook Form + Zod validation
+- **Icons**: Lucide React
+- **UI Components**: Radix UI primitives
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🚀 Getting Started
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Prerequisites
 
-Follow these steps:
+- Node.js (v16 or higher)
+- npm or yarn
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Installation
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+```bash
+# Clone the repository
+git clone https://github.com/arjitkulkarni/bharat-farm-chain.git
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Navigate to project directory
+cd bharat-farm-chain
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:5173`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Build for Production
 
-**Use GitHub Codespaces**
+```bash
+# Create optimized production build
+npm run build
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Preview production build locally
+npm run preview
+```
 
-## What technologies are used for this project?
+## 📁 Project Structure
 
-This project is built with:
+```
+bharat-farm-chain/
+├── src/
+│   ├── components/          # Reusable UI components
+│   │   ├── ui/             # shadcn-ui components
+│   │   ├── Header.tsx      # Navigation header
+│   │   ├── Footer.tsx      # Footer component
+│   │   └── PortalCard.tsx  # Role-based portal cards
+│   ├── pages/              # Route pages
+│   │   ├── Index.tsx       # Landing page
+│   │   ├── Farmer.tsx      # Farmer portal dashboard
+│   │   ├── Vendor.tsx      # Vendor portal
+│   │   ├── Buyer.tsx       # Buyer portal
+│   │   └── farmer/         # Farmer sub-pages
+│   │       ├── Login.tsx
+│   │       ├── CreateListing.tsx
+│   │       ├── SoilAnalysis.tsx
+│   │       └── ...
+│   ├── hooks/              # Custom React hooks
+│   ├── lib/                # Utility functions
+│   ├── assets/             # Images and static files
+│   ├── App.tsx             # Root component with routing
+│   └── main.tsx            # Application entry point
+├── public/                 # Static assets
+└── package.json
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🌐 Multi-Language Support
 
-## How can I deploy this project?
+The platform supports three languages with full UI translation:
+- **English** (Default)
+- **हिंदी** (Hindi)
+- **ಕನ್ನಡ** (Kannada)
 
-Simply open [Lovable](https://lovable.dev/projects/4dd17f02-900f-4788-84bc-075151c5b2ad) and click on Share -> Publish.
+Language switching is available in the farmer dashboard header.
 
-## Can I connect a custom domain to my Lovable project?
+## 🔐 Security & Trust Features
 
-Yes, you can!
+- **Blockchain Traceability**: Every transaction and listing gets a unique hash
+- **DPIN Verification**: Offline identity verification for low-network areas
+- **Contact Approval System**: Privacy-protected buyer-farmer connections
+- **Verified Profiles**: Government-backed vendor and farmer verification
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🎯 Roadmap
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- [ ] Backend API integration with Supabase
+- [ ] Real AI soil analysis with computer vision
+- [ ] SMS/OTP authentication system
+- [ ] Payment gateway integration (UPI, escrow)
+- [ ] PWA support for offline functionality
+- [ ] Real-time chat between users
+- [ ] Government scheme API integration
+- [ ] Weather API integration (OpenWeatherMap)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 👥 Team
+
+Built for HackKarnataka by the Bharat Farm Chain team.
+
+## 📞 Support
+
+For questions or support, please open an issue on GitHub.
+
+---
+
+**Made with ❤️ for India's farmers**
