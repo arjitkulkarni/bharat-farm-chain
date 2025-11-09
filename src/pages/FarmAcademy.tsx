@@ -52,37 +52,37 @@ const FarmAcademy = () => {
         videos: [
           {
             title: "Modern Farming Techniques - Complete Guide",
-            url: "https://www.youtube.com/embed/9bZkp7q19f0",
+            url: "https://www.youtube.com/embed/BodxW0FcVpw",
             duration: "45 min",
             language: "Hindi"
           },
           {
             title: "Organic Farming Methods for Beginners",
-            url: "https://www.youtube.com/embed/9bZkp7q19f0",
+            url: "https://www.youtube.com/embed/VfoNz31XypM",
             duration: "32 min",
             language: "English"
           },
           {
             title: "Soil Testing and Management",
-            url: "https://www.youtube.com/embed/9bZkp7q19f0",
+            url: "https://www.youtube.com/embed/c7Z8K6VqK5A",
             duration: "28 min",
             language: "Kannada"
           },
           {
             title: "Drip Irrigation System Setup",
-            url: "https://www.youtube.com/embed/9bZkp7q19f0",
+            url: "https://www.youtube.com/embed/Y2qfZKNpZvc",
             duration: "25 min",
             language: "Hindi"
           },
           {
             title: "Pest and Disease Control",
-            url: "https://www.youtube.com/embed/9bZkp7q19f0",
+            url: "https://www.youtube.com/embed/nv9J3XlMBHo",
             duration: "38 min",
             language: "English"
           },
           {
             title: "Crop Rotation Planning",
-            url: "https://www.youtube.com/embed/9bZkp7q19f0",
+            url: "https://www.youtube.com/embed/Bw_Wv7oGu2Q",
             duration: "20 min",
             language: "Kannada"
           }

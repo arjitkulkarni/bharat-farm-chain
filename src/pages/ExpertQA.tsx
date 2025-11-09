@@ -128,22 +128,49 @@ const ExpertQA = () => {
   ];
 
   const crops = [
-    "Rice", "Wheat", "Maize", "Sugarcane", "Cotton", "Turmeric", "Onions",
-    "Tomatoes", "Potatoes", "Peppers", "Pulses", "Oilseeds", "Fruits",
-    "Vegetables", "Spices", "Floriculture",
+    { name: "Rice", icon: "🌾", category: "Grains" },
+    { name: "Wheat", icon: "🌾", category: "Grains" },
+    { name: "Maize", icon: "🌽", category: "Grains" },
+    { name: "Sugarcane", icon: "🎋", category: "Cash Crops" },
+    { name: "Cotton", icon: "☁️", category: "Cash Crops" },
+    { name: "Turmeric", icon: "🟡", category: "Spices" },
+    { name: "Onions", icon: "🧅", category: "Vegetables" },
+    { name: "Tomatoes", icon: "🍅", category: "Vegetables" },
+    { name: "Potatoes", icon: "🥔", category: "Vegetables" },
+    { name: "Peppers", icon: "🌶️", category: "Vegetables" },
+    { name: "Pulses", icon: "🫘", category: "Legumes" },
+    { name: "Oilseeds", icon: "🌻", category: "Cash Crops" },
+    { name: "Fruits", icon: "🍎", category: "Horticulture" },
+    { name: "Vegetables", icon: "🥬", category: "Horticulture" },
+    { name: "Spices", icon: "🌶️", category: "Spices" },
+    { name: "Floriculture", icon: "🌸", category: "Horticulture" },
   ];
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleCropToggle = (crop: string) => {
+  const handleCropToggle = (cropName: string) => {
     setFormData((prev) => {
-      const crops = prev.cropsInterested.includes(crop)
-        ? prev.cropsInterested.filter((c) => c !== crop)
-        : [...prev.cropsInterested, crop];
-      return { ...prev, cropsInterested: crops };
+      const selectedCrops = prev.cropsInterested.includes(cropName)
+        ? prev.cropsInterested.filter((c) => c !== cropName)
+        : [...prev.cropsInterested, cropName];
+      return { ...prev, cropsInterested: selectedCrops };
     });
+  };
+
+  const handleSelectAllCrops = () => {
+    setFormData((prev) => ({
+      ...prev,
+      cropsInterested: crops.map((c) => c.name),
+    }));
+  };
+
+  const handleClearAllCrops = () => {
+    setFormData((prev) => ({
+      ...prev,
+      cropsInterested: [],
+    }));
   };
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -3281,48 +3308,223 @@ const ExpertQA = () => {
                         onChange={(e) => handleInputChange("farmSize", e.target.value)}
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label>Interested Crops (Select multiple)</Label>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <Label className="text-base font-semibold">Interested Crops (Select multiple)</Label>
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                          >
+                            <Badge className="bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md">
+                              {formData.cropsInterested.length} / {crops.length} selected
+                            </Badge>
+                          </motion.div>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={handleSelectAllCrops}
+                            className="text-xs hover:bg-orange-50 hover:border-orange-300 transition-all"
+                          >
+                            Select All
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={handleClearAllCrops}
+                            className="text-xs hover:bg-red-50 hover:border-red-300 transition-all"
+                            disabled={formData.cropsInterested.length === 0}
+                          >
+                            Clear All
+                          </Button>
+                        </div>
+                      </div>
+                      
                       <motion.div
-                        className="grid grid-cols-2 gap-2 md:grid-cols-3"
+                        className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4"
                         variants={containerVariants}
                         initial="hidden"
                         animate="visible"
                       >
-                        {crops.map((crop, idx) => (
-                          <motion.div
-                            key={crop}
-                            variants={itemVariants}
-                            whileHover={{ scale: 1.05, y: -2 }}
-                            whileTap={{ scale: 0.95 }}
-                            className={`flex cursor-pointer items-center gap-2 rounded-lg border p-2 transition ${
-                              formData.cropsInterested.includes(crop)
-                                ? "border-orange-500 bg-orange-50 shadow-md"
-                                : "border-border bg-white hover:border-orange-200"
-                            }`}
-                            onClick={() => handleCropToggle(crop)}
-                            animate={{
-                              scale: formData.cropsInterested.includes(crop) ? [1, 1.05, 1] : 1,
-                            }}
-                            transition={{ duration: 0.3 }}
-                          >
+                        {crops.map((crop, idx) => {
+                          const isSelected = formData.cropsInterested.includes(crop.name);
+                          return (
                             <motion.div
-                              animate={{
-                                scale: formData.cropsInterested.includes(crop) ? [0, 1.2, 1] : 1,
-                                rotate: formData.cropsInterested.includes(crop) ? [0, 360] : 0,
+                              key={crop.name}
+                              variants={itemVariants}
+                              custom={idx}
+                              whileHover={{ 
+                                scale: 1.05, 
+                                y: -4,
+                                transition: { type: "spring", stiffness: 400, damping: 15 }
                               }}
-                              transition={{ duration: 0.5 }}
+                              whileTap={{ scale: 0.97 }}
+                              className="relative group"
                             >
-                              <CheckCircle2
-                                className={`h-4 w-4 ${
-                                  formData.cropsInterested.includes(crop) ? "text-orange-600" : "text-muted-foreground"
-                                }`}
-                              />
+                              <motion.div
+                                className={`
+                                  relative overflow-hidden cursor-pointer rounded-xl border-2 p-4 transition-all duration-300
+                                  ${isSelected
+                                    ? "border-orange-500 bg-gradient-to-br from-orange-50 via-amber-50 to-orange-50 shadow-lg shadow-orange-200/50"
+                                    : "border-gray-200 bg-white hover:border-orange-300 hover:shadow-md"
+                                  }
+                                `}
+                                onClick={() => handleCropToggle(crop.name)}
+                                animate={{
+                                  borderColor: isSelected ? ["#f97316", "#fb923c", "#f97316"] : "#e5e7eb",
+                                }}
+                                transition={{
+                                  duration: 2,
+                                  repeat: isSelected ? Infinity : 0,
+                                  ease: "easeInOut",
+                                }}
+                              >
+                                {/* Animated background gradient on hover */}
+                                <motion.div
+                                  className="absolute inset-0 bg-gradient-to-br from-orange-100/0 via-amber-100/0 to-orange-100/0 group-hover:from-orange-100/30 group-hover:via-amber-100/20 group-hover:to-orange-100/30"
+                                  initial={{ opacity: 0 }}
+                                  whileHover={{ opacity: 1 }}
+                                  transition={{ duration: 0.3 }}
+                                />
+
+                                {/* Selection ripple effect */}
+                                <AnimatePresence>
+                                  {isSelected && (
+                                    <motion.div
+                                      className="absolute inset-0 bg-orange-400/20 rounded-xl"
+                                      initial={{ scale: 0, opacity: 0.5 }}
+                                      animate={{ scale: 2, opacity: 0 }}
+                                      exit={{ scale: 0, opacity: 0 }}
+                                      transition={{ duration: 0.6, ease: "easeOut" }}
+                                    />
+                                  )}
+                                </AnimatePresence>
+
+                                {/* Content */}
+                                <div className="relative z-10 flex flex-col items-center gap-2">
+                                  {/* Icon with animation */}
+                                  <motion.div
+                                    className="text-3xl"
+                                    animate={{
+                                      scale: isSelected ? [1, 1.2, 1] : 1,
+                                      rotate: isSelected ? [0, 10, -10, 0] : 0,
+                                    }}
+                                    transition={{
+                                      duration: 0.5,
+                                      ease: "easeInOut",
+                                    }}
+                                  >
+                                    {crop.icon}
+                                  </motion.div>
+
+                                  {/* Crop name */}
+                                  <span className={`text-sm font-medium text-center transition-colors ${
+                                    isSelected ? "text-orange-700" : "text-gray-700 group-hover:text-orange-600"
+                                  }`}>
+                                    {crop.name}
+                                  </span>
+
+                                  {/* Category badge */}
+                                  <Badge 
+                                    variant="outline" 
+                                    className={`text-[10px] px-1.5 py-0 h-4 transition-all ${
+                                      isSelected 
+                                        ? "bg-orange-100 border-orange-300 text-orange-700" 
+                                        : "bg-gray-50 border-gray-200 text-gray-600 group-hover:bg-orange-50 group-hover:border-orange-200"
+                                    }`}
+                                  >
+                                    {crop.category}
+                                  </Badge>
+                                </div>
+
+                                {/* Check indicator */}
+                                <AnimatePresence>
+                                  {isSelected && (
+                                    <motion.div
+                                      className="absolute top-2 right-2"
+                                      initial={{ scale: 0, rotate: -180 }}
+                                      animate={{ scale: 1, rotate: 0 }}
+                                      exit={{ scale: 0, rotate: 180 }}
+                                      transition={{
+                                        type: "spring",
+                                        stiffness: 400,
+                                        damping: 15,
+                                      }}
+                                    >
+                                      <div className="rounded-full bg-orange-500 p-1 shadow-lg">
+                                        <CheckCircle2 className="h-4 w-4 text-white" />
+                                      </div>
+                                    </motion.div>
+                                  )}
+                                </AnimatePresence>
+
+                                {/* Shimmer effect on hover */}
+                                <motion.div
+                                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                                  initial={{ x: "-100%", opacity: 0 }}
+                                  whileHover={{
+                                    x: "100%",
+                                    opacity: 1,
+                                    transition: { duration: 0.6, ease: "easeInOut" },
+                                  }}
+                                />
+                              </motion.div>
                             </motion.div>
-                            <span className="text-sm">{crop}</span>
-                          </motion.div>
-                        ))}
+                          );
+                        })}
                       </motion.div>
+                      
+                      {/* Selected crops summary */}
+                      <AnimatePresence>
+                        {formData.cropsInterested.length > 0 && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.3 }}
+                            className="rounded-lg bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 p-4"
+                          >
+                            <div className="flex items-start gap-3">
+                              <motion.div
+                                animate={{ rotate: [0, 10, -10, 0] }}
+                                transition={{ duration: 2, repeat: Infinity }}
+                              >
+                                <Sparkles className="h-5 w-5 text-orange-500 mt-0.5" />
+                              </motion.div>
+                              <div className="flex-1">
+                                <p className="text-sm font-semibold text-orange-900 mb-1">Your Selection</p>
+                                <div className="flex flex-wrap gap-2">
+                                  {formData.cropsInterested.map((cropName, index) => {
+                                    const crop = crops.find((c) => c.name === cropName);
+                                    return (
+                                      <motion.div
+                                        key={cropName}
+                                        initial={{ scale: 0, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        exit={{ scale: 0, opacity: 0 }}
+                                        transition={{ 
+                                          delay: index * 0.05,
+                                          type: "spring",
+                                          stiffness: 300,
+                                          damping: 20,
+                                        }}
+                                      >
+                                        <Badge className="bg-white border-orange-300 text-orange-700 shadow-sm hover:shadow-md transition-shadow">
+                                          <span className="mr-1">{crop?.icon}</span>
+                                          {cropName}
+                                        </Badge>
+                                      </motion.div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                   </div>
                   <div className="mt-6 flex justify-between">
@@ -3524,7 +3726,7 @@ const ExpertQA = () => {
                         </motion.div>
                         <h2 className="text-2xl font-bold text-foreground">Soil Image Analysis</h2>
                       </div>
-                      <p className="text-muted-foreground">Upload or capture soil/leaf images for AI-powered analysis</p>
+                      <p className="text-muted-foreground">Upload or capture soil images for AI-powered analysis</p>
                     </motion.div>
                   <div className="space-y-6">
                     <Tabs defaultValue="upload" className="space-y-4">
